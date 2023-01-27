@@ -2,8 +2,8 @@ import java.util.Scanner;
 
 public class Human extends Player {
 
-    public Human(char symbol) {
-        super(symbol);
+    public Human() { //Player's symbol is X
+        super('X');
     }
 
     @Override
@@ -11,7 +11,7 @@ public class Human extends Player {
         while(true){
             try {
                 Scanner input = new Scanner(System.in);
-                System.out.println("Enter move: ");
+                System.out.print("Enter move: ");
                 int movement = input.nextInt();
                 --movement; //when user enters 1 it means 0 for array representation
                 if(!checkIsMoveLegal(movement, gameBoard)){

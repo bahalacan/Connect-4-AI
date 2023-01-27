@@ -1,7 +1,7 @@
 public class AI extends Player {
 
-    public AI(char symbol) {
-        super(symbol);
+    public AI() { // AI's symbol is O
+        super('O');
     }
 
     @Override

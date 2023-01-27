@@ -32,9 +32,12 @@ public class Game {
     
     }
 
-    public void startGame(Player p1, Player p2){ // AI and Human should be inherited from Player class
+    public void startGame(Player p1, Player p2, char status){ // AI and Human should be inherited from Player class
         printGameBoard();
-        int turn = 0;
+        int turn = 0; //0 for player, 1 for AI
+        if(status == 'n'){
+            turn = 1;
+        }        
         int movement = 0;
         while(!isGameOver(turn == 1 ? p1 : p2)){
             if(turn == 0){
@@ -44,7 +47,7 @@ public class Game {
                 printGameBoard();
                 turn = 1;
             }else{
-                System.out.println("Second player's turn...");
+                System.out.println("AI's turn...");
                 movement = p2.play(gameBoard);
                 updateGameBoard(movement, p2.getSymbol());
                 printGameBoard();
@@ -64,10 +67,10 @@ public class Game {
 
     private boolean isGameOver(Player p) { // Send player as parameter because i will pass also ai agent
         if(checkHorizontal(p.getSymbol()) || checkVertical(p.getSymbol()) || checkDiagonal(p.getSymbol())){ //think about for better method
-            if(p instanceof AI){
-                System.out.println("AI won.");
-            }else{
-                System.out.println(p.getSymbol() + " player won.");
+            if(p instanceof AI) {
+                System.out.println("You lost.");
+            } else {
+                System.out.println("You won.");
             }       
             return true;
         }
