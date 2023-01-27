@@ -1,6 +1,8 @@
-public class Player {
+public abstract class Player {
 
     private char symbol;
+
+    public abstract int play(char gameBoard[][]);
 
     public Player(char symbol){
         this.symbol = symbol;
