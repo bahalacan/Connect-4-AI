@@ -39,20 +39,25 @@ public class Game {
             turn = 1;
         }        
         int movement = 0;
-        while(!isGameOver(turn == 1 ? p1 : p2)){
-            if(turn == 0){
-                System.out.println("First player's turn...");
-                movement = p1.play(gameBoard);
+        while(!isGameOver(turn == 1 ? p1.getSymbol() : p2.getSymbol())){
+            if(turn == 0) {
+                System.out.println("Player's turn...");
+                movement = p1.play(this);
                 updateGameBoard(movement, p1.getSymbol());
                 printGameBoard();
                 turn = 1;
-            }else{
+            } else {
                 System.out.println("AI's turn...");
-                movement = p2.play(gameBoard);
+                movement = p2.play(this);
                 updateGameBoard(movement, p2.getSymbol());
                 printGameBoard();
                 turn = 0;   
             }
+        }
+        if(turn == 1){
+            System.out.println("Player won.");
+        } else {
+            System.out.println("AI won");
         }
     }
 
@@ -65,13 +70,8 @@ public class Game {
         }      
     }
 
-    private boolean isGameOver(Player p) { // Send player as parameter because i will pass also ai agent
-        if(checkHorizontal(p.getSymbol()) || checkVertical(p.getSymbol()) || checkDiagonal(p.getSymbol())){ //think about for better method
-            if(p instanceof AI) {
-                System.out.println("You lost.");
-            } else {
-                System.out.println("You won.");
-            }       
+    public boolean isGameOver(char symbol) { // Send player as parameter because i will pass also ai agent
+        if(checkHorizontal(symbol) || checkVertical(symbol) || checkDiagonal(symbol)){ //think about for better method
             return true;
         }
         return false;
@@ -127,5 +127,9 @@ public class Game {
 
     public char[][] getGameBoard() {
         return gameBoard;
+    }
+
+    public void setGameBoard(char[][] gameBoard) {
+        this.gameBoard = gameBoard;
     }
 }

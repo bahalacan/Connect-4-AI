@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 public class App {
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args){
 
         // Player should enter row and column number as an input 
         // Player should select who is first
@@ -20,6 +20,6 @@ public class App {
         Player player2 = new AI();
 
         connect4.startGame(player1, player2, status);
-        
+        input.close();
     }
 }

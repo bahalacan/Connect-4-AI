@@ -7,7 +7,8 @@ public class Human extends Player {
     }
 
     @Override
-    public int play(char gameBoard[][]) {
+    public int play(Game game) {
+        char[][] gameBoard = game.getGameBoard();
         while(true){
             try {
                 Scanner input = new Scanner(System.in);
@@ -22,6 +23,7 @@ public class Human extends Player {
                 System.out.println("Enter correct input");
             }
         }
+        
     }
 
     private boolean checkIsMoveLegal(int movement, char gameBoard[][]) {
