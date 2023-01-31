@@ -34,7 +34,7 @@ public class Game {
 
     public void startGame(Player p1, Player p2, char status){ // AI and Human should be inherited from Player class
         printGameBoard();
-        int turn = 0; //0 for player, 1 for AI
+        int turn = 0; //0 for human, 1 for AI
         if(status == 'n'){
             turn = 1;
         }        
@@ -70,7 +70,7 @@ public class Game {
         }      
     }
 
-    public boolean isGameOver(char symbol) { // Send player as parameter because i will pass also ai agent
+    public boolean isGameOver(char symbol) { 
         if(checkHorizontal(symbol) || checkVertical(symbol) || checkDiagonal(symbol)){ //think about for better method
             return true;
         }
