@@ -2,6 +2,7 @@ import java.util.ArrayList;
 
 public class AI extends Player {
     private int bestMove;
+    private Heuristic h1;
 
     public AI() { // AI's symbol is O
         super('O');
@@ -17,9 +18,9 @@ public class AI extends Player {
     private int max(Game game, int depthLimit) {
         ArrayList<Game> moves = new ArrayList<Game>();
         getValidMoves(game, moves, 'O');
-
-        if(moves.size() == 0 || game.isGameOver('O') || depthLimit == 2){
-            return (int)(Math.random() * 200);
+        if(moves.size() == 0 || game.isGameOver('X') || depthLimit == 5){
+            h1 = new Heuristic(game);
+            return h1.getValue();
         }
         int maxMove = Integer.MIN_VALUE;
         for(int i=0; i<moves.size(); i++){
@@ -28,8 +29,10 @@ public class AI extends Player {
             }
             int fromMin = min(moves.get(i), depthLimit+1);
             if(fromMin >= maxMove){
-                maxMove = fromMin;
-                bestMove = i;
+                if(depthLimit == 0){
+                    bestMove = i;
+                }      
+                maxMove = fromMin;              
             }      
         }
         return maxMove;
@@ -39,8 +42,9 @@ public class AI extends Player {
         ArrayList<Game> moves = new ArrayList<Game>();
         getValidMoves(game, moves, 'X');
 
-        if(moves.size() == 0 || game.isGameOver('X') || depthLimit == 2){
-            return (int)(Math.random() * 200);
+        if(moves.size() == 0 || game.isGameOver('O') || depthLimit == 5){
+            h1 = new Heuristic(game);
+            return h1.getValue();
         }
         int minMove = Integer.MAX_VALUE;
         for(int i=0; i<moves.size(); i++){
@@ -55,7 +59,7 @@ public class AI extends Player {
         return minMove;
     }
 
-    private void getValidMoves(Game game, ArrayList<Game> moves, char symbol) {
+    public void getValidMoves(Game game, ArrayList<Game> moves, char symbol) {
         char[][] gameBoard = game.getGameBoard();
         for(int i=0; i<game.getColumn(); i++){
             if(game.getGameBoard()[0][i] != '.'){

@@ -54,7 +54,7 @@ public class Game {
                 turn = 0;   
             }
         }
-        if(turn == 1){
+        if(turn == 1) {
             System.out.println("Player won.");
         } else {
             System.out.println("AI won");
@@ -130,6 +130,12 @@ public class Game {
     }
 
     public void setGameBoard(char[][] gameBoard) {
-        this.gameBoard = gameBoard;
+        char[][] gameBoard2 = new char[row][column];
+        for(int i=0; i<row; i++){
+            for(int j=0; j<column; j++){
+                gameBoard2[i][j] = gameBoard[i][j];
+            }
+        }
+        this.gameBoard = gameBoard2;
     }
 }
