@@ -129,103 +129,18 @@ public class Heuristic {
             }
         }
         //diagonal check
-        for(i=0; i<game.getRow(); i++){
-            counter = 0;
-            int k=i;
-            for(j=0; j<game.getColumn(); j++){
-                if(gameBoard[k][j] == symbol){
-                    counter++;
-                } else {
-                    counter = 0;
+        for(i=0; i<game.getRow()-3; i++){
+            for(j=0; j<game.getColumn()-3; j++){
+                if(gameBoard[i][j] == symbol && gameBoard[i+1][j+1] == symbol && gameBoard[i+2][j+2] == symbol && gameBoard[i+3][j+3] == symbol){
+                    return 1;
                 }
-                if(counter == occurence){
-                    counter = 0;
-                    switch (occurence){
-                        case 2:
-                            if(j < game.getColumn() - 2 && k < game.getRow() - 2 ){
-                                if(gameBoard[k+1][j+1] == '.' && gameBoard[k+2][j+2] == '.'){
-                                    total++;
-                                }
-                            }
-                            if(j > 2 && k > 2){
-                                if(gameBoard[k-2][j-2] == '.' && gameBoard[k-3][j-3] == '.'){
-                                    total++;
-                                }         
-                            }
-                            break;
-                        case 3:
-                            if(j < game.getColumn() - 1 && k < game.getRow() - 1){
-                                if(gameBoard[k+1][j+1] == '.'){
-                                    total++;
-                                }
-                            }
-                            if(j > 2 && k > 2){
-                                if(gameBoard[k-3][j-3] == '.'){
-                                    total++;
-                                }         
-                            }
-                            break;
-                        case 4:
-                            total++;
-                            break;
-                    }
-                }
-                if(k < game.getRow() - 1){
-                    k++;
-                } else {
-                    break;
-                }
-                
             }
         }
-        //diagonal check 2
-        for(i=0; i<game.getRow(); i++){
-            counter = 0;
-            int k=i;
-            for(j=0; j<game.getColumn(); j++){
-                if(gameBoard[k][j] == symbol){
-                    counter++;
-                } else {
-                    counter = 0;
+        for(i=game.getRow()-1; i>2; i--){
+            for(j=0; j<game.getColumn()-3; j++){
+                if(gameBoard[i][j] == symbol && gameBoard[i-1][j+1] == symbol && gameBoard[i-2][j+2] == symbol && gameBoard[i-3][j+3] == symbol){
+                    return 1;
                 }
-                if(counter == occurence){
-                    counter = 0;
-                    switch (occurence){
-                        case 2:
-                            if(j < game.getColumn() - 2 && k > 1 ){
-                                if(gameBoard[k-1][j+1] == '.' && gameBoard[k-2][j+2] == '.'){
-                                    total++;
-                                }
-                            }
-                            if(j > 2 && k < game.getRow() - 3){
-                                if(gameBoard[k+2][j-2] == '.' && gameBoard[k+3][j-3] == '.'){
-                                    total++;
-                                }         
-                            }
-                            break;
-                        case 3:
-                            if(j < game.getColumn() - 1 && k > 0){
-                                if(gameBoard[k-1][j+1] == '.'){
-                                    total++;
-                                }
-                            }
-                            if(j > 2 && k > game.getRow() - 3){
-                                if(gameBoard[k+3][j-3] == '.'){
-                                    total++;
-                                }         
-                            }
-                            break;
-                        case 4:
-                            total++;
-                            break;
-                    }
-                }
-                if(k > 0){
-                    k--;
-                } else {
-                    break;
-                }
-                
             }
         }
 

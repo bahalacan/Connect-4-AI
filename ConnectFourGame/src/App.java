@@ -19,5 +19,18 @@ public class App {
 
         connect4.startGame(player1, player2, status);
         input.close();
+        
+/* 
+        char[][] deneme = {{'.','.','.','.','.','.','.','.'},
+                           {'.','.','.','.','.','.','.','.'},
+                           {'.','.','.','.','.','O','O','.'},
+                           {'.','.','.','.','.','X','X','X'},
+                           {'.','.','.','.','X','O','O','O'},
+                           {'.','.','.','X','O','X','X','O'},
+                           {'.','X','X','O','X','O','X','O'}};
+        connect4.setGameBoard(deneme);
+        Heuristic h1 = new Heuristic(connect4);
+        System.out.println(h1.getValue());
+        */
     }
 }
