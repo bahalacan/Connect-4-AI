@@ -19,8 +19,8 @@ public class Heuristic {
         int threeHeurAI = calculateHeuristicValue(game, 3, 'O');
         int threeHeurHuman = calculateHeuristicValue(game, 3, 'X');
         
-        int ai_point = 5*threeHeurAI + 2*twoHeurAI;
-        int player_point = 5*threeHeurHuman + 2*twoHeurHuman;
+        int ai_point = 7*threeHeurAI + 2*twoHeurAI;
+        int player_point = 7*threeHeurHuman + 2*twoHeurHuman;
         return ai_point - player_point;
     }
 
@@ -36,114 +36,245 @@ public class Heuristic {
         return counter;
     }
 
-    private int calculateHeuristicValue(Game game, int occurence, char symbol) {
+    public int calculateHeuristicValue(Game game, int occurence, char symbol) {
+        int horizontal = calculateHorizontal(game, occurence, symbol);
+        int vertical = calculateVertical(game, occurence, symbol);
+        int posDiagonal = calculatePosDiagonal(game, occurence, symbol);
+        int negDiagonal = calculateNegDiagonal(game, occurence, symbol);
+
+        
+        return negDiagonal + horizontal + vertical + posDiagonal;
+    }
+
+    private int calculateNegDiagonal(Game game, int occurence, char symbol) {
         int total = 0;
         char[][] gameBoard = game.getGameBoard();
         int i=0;
         int j=0;
-        int counter = 0;
-        //horizontal check
         for(i=0; i<game.getRow(); i++){
-            counter = 0;
             for(j=0; j<game.getColumn(); j++){
                 if(gameBoard[i][j] == symbol){
-                    counter++;
-                } else {
-                    counter = 0;
-                }
-                if(counter == occurence){
-                    counter = 0;
-                    switch (occurence){
-                        case 2:
-                            if(j < game.getColumn() - 2){
-                                if(gameBoard[i][j+1] == '.' && gameBoard[i][j+2] == '.'){
-                                    total++;
-                                }
-                            }
-                            if(j > 2){
-                                if(gameBoard[i][j-2] == '.' && gameBoard[i][j-3] == '.'){
-                                    total++;
-                                }         
-                            }
+                    boolean control = true;
+                    for(int k=occurence-1; k>0; k--){
+                        if(i-k < 0 || j+k >= game.getColumn()){
+                            control = false;
                             break;
-                        case 3:
-                            if(j < game.getColumn() - 1){
-                                if(gameBoard[i][j+1] == '.'){
-                                    total++;
-                                }
+                        }
+                        if(gameBoard[i-k][j+k] != symbol){
+                            control = false;
+                        }
+                    }
+                    if(control && occurence == 4){
+                        return 1;
+                    }
+                    if(control){
+                        int k = 4 - occurence;
+                        int a = occurence; 
+                        for(; k>0; k--){
+                            if(i-a < 0 || j+a >= game.getColumn()){
+                                control = false;
+                                break;
                             }
-                            if(j > 2){
-                                if(gameBoard[i][j-3] == '.'){
-                                    total++;
-                                }         
+                            if(gameBoard[i-a][j+a] != '.'){
+                                control = false;
                             }
-                            break;
-                        case 4:
+                            a++;
+                        }
+                        if(control){
                             total++;
-                            break;
+                        }
+                        control = true;
+                        k = 4-occurence;
+                        for(; k>0; k--){
+                            if(i+k >= game.getRow() || j-k < 0){
+                                control=false;
+                                break;
+                            }
+                            if(gameBoard[i+k][j-k] != '.'){
+                                control = false;
+                            }
+                        }
+                        if(control){
+                            total++;
+                        }
                     }
                 }
             }
         }
-        //vertical check
-        for(i=0; i<game.getColumn(); i++){
-            counter = 0;
-            for(j=0; j<game.getRow(); j++){
-                if(gameBoard[j][i] == symbol){
-                    counter++;
-                } else {
-                    counter = 0;
-                }
-                if(counter == occurence){
-                    counter = 0;
-                    switch (occurence){
-                        case 2:
-                            if(j < game.getRow() - 2){
-                                if(gameBoard[j+1][i] == '.' && gameBoard[j+2][i] == '.'){
-                                    total++;
-                                }
-                            }
-                            if(j > 2){
-                                if(gameBoard[j-2][i] == '.' && gameBoard[j-3][i] == '.'){
-                                    total++;
-                                }         
-                            }
-                            break;
-                        case 3:
-                            if(j < game.getRow() - 1){
-                                if(gameBoard[j+1][i] == '.'){
-                                    total++;
-                                }
-                            }
-                            if(j > 2){
-                                if(gameBoard[j-3][i] == '.'){
-                                    total++;
-                                }         
-                            }
-                            break;
-                        case 4:
-                            total++;
-                            break;
-                    }
-                }
-            }
-        }
-        //diagonal check
-        for(i=0; i<game.getRow()-3; i++){
-            for(j=0; j<game.getColumn()-3; j++){
-                if(gameBoard[i][j] == symbol && gameBoard[i+1][j+1] == symbol && gameBoard[i+2][j+2] == symbol && gameBoard[i+3][j+3] == symbol){
-                    return 1;
-                }
-            }
-        }
-        for(i=game.getRow()-1; i>2; i--){
-            for(j=0; j<game.getColumn()-3; j++){
-                if(gameBoard[i][j] == symbol && gameBoard[i-1][j+1] == symbol && gameBoard[i-2][j+2] == symbol && gameBoard[i-3][j+3] == symbol){
-                    return 1;
-                }
-            }
-        }
+        return total;
+    }
 
+    private int calculatePosDiagonal(Game game, int occurence, char symbol) {
+        int total = 0;
+        char[][] gameBoard = game.getGameBoard();
+        int i=0;
+        int j=0;
+        for(i=0; i<game.getRow(); i++){
+            for(j=0; j<game.getColumn(); j++){
+                if(gameBoard[i][j] == symbol){
+                    boolean control = true;
+                    for(int k=occurence-1; k>0; k--){
+                        if(i+k >= game.getRow() || j+k >= game.getColumn()){
+                            control = false;
+                            break;
+                        }
+                        if(gameBoard[i+k][j+k] != symbol){
+                            control = false;
+                        }
+                    }
+                    if(control && occurence == 4){
+                        return 1;
+                    }
+                    if(control){
+                        int k = 4 - occurence;
+                        int a = occurence; 
+                        for(; k>0; k--){
+                            if(i+a >= game.getRow() || j+a >= game.getColumn()){
+                                control = false;
+                                break;
+                            }
+                            if(gameBoard[i+a][j+a] != '.'){
+                                control = false;
+                            }
+                            a++;
+                        }
+                        if(control){
+                            total++;
+                        }
+                        control = true;
+                        k = 4-occurence;
+                        for(; k>0; k--){
+                            if(i-k < 0 || j-k < 0){
+                                control=false;
+                                break;
+                            }
+                            if(gameBoard[i-k][j-k] != '.'){
+                                control = false;
+                            }
+                        }
+                        if(control){
+                            total++;
+                        }
+                    }
+                }
+            }
+        }
+        return total;
+    }
+
+    private int calculateVertical(Game game, int occurence, char symbol) {
+        int total = 0;
+        char[][] gameBoard = game.getGameBoard();
+        int i=0;
+        int j=0;
+        for(i=0; i<game.getRow(); i++){
+            for(j=0; j<game.getColumn(); j++){
+                if(gameBoard[i][j] == symbol){
+                    boolean control = true;
+                    for(int k=occurence-1; k>0; k--){
+                        if(i+k >= game.getRow()){
+                            control = false;
+                            break;
+                        }
+                        if(gameBoard[i+k][j] != symbol){
+                            control = false;
+                        }
+                    }
+                    if(control && occurence == 4){
+                        return 1;
+                    }
+                    if(control){
+                        int k = 4 - occurence;
+                        int a = occurence; 
+                        for(; k>0; k--){
+                            if(i+a >= game.getRow()){
+                                control = false;
+                                break;
+                            }
+                            if(gameBoard[i+a][j] != '.'){
+                                control = false;
+                            }
+                            a++;
+                        }
+                        if(control){
+                            total++;
+                        }
+                        control = true;
+                        k = 4-occurence;
+                        for(; k>0; k--){
+                            if(i-k < 0){
+                                control=false;
+                                break;
+                            }
+                            if(gameBoard[i-k][j] != '.'){
+                                control = false;
+                            }
+                        }
+                        if(control){
+                            total++;
+                        }
+                    }
+                }
+            }
+        }
+        return total;
+    }
+
+    private int calculateHorizontal(Game game, int occurence, char symbol) {
+        int total = 0;
+        char[][] gameBoard = game.getGameBoard();
+        int i=0;
+        int j=0;
+        for(i=0; i<game.getRow(); i++){
+            for(j=0; j<game.getColumn(); j++){
+                if(gameBoard[i][j] == symbol){
+                    boolean control = true;
+                    for(int k=occurence-1; k>0; k--){
+                        if(j+k >= game.getColumn()){
+                            control = false;
+                            break;
+                        }
+                        if(gameBoard[i][j+k] != symbol){
+                            control = false;
+                        }
+                    }
+                    if(control && occurence == 4){
+                        return 1;
+                    }
+                    if(control){
+                        int k = 4 - occurence;
+                        int a = occurence; 
+                        for(; k>0; k--){
+                            if(j+a >= game.getColumn()){
+                                control = false;
+                                break;
+                            }
+                            if(gameBoard[i][j+a] != '.'){
+                                control = false;
+                            }
+                            a++;
+                        }
+                        if(control){
+                            total++;
+                        }
+                        control = true;
+                        k = 4-occurence;
+                        for(; k>0; k--){
+                            if(j-k < 0){
+                                control=false;
+                                break;
+                            }
+                            if(gameBoard[i][j-k] != '.'){
+                                control = false;
+                            }
+                        }
+                        if(control){
+                            total++;
+                        }
+                    }
+                }
+            }
+        }
         return total;
     }
 
