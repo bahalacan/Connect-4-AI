@@ -36,7 +36,7 @@ public class Heuristic {
         return counter;
     }
 
-    public int calculateHeuristicValue(Game game, int occurence, char symbol) {
+    private int calculateHeuristicValue(Game game, int occurence, char symbol) {
         int horizontal = calculateHorizontal(game, occurence, symbol);
         int vertical = calculateVertical(game, occurence, symbol);
         int posDiagonal = calculatePosDiagonal(game, occurence, symbol);

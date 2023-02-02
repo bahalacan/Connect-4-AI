@@ -59,7 +59,7 @@ public class AI extends Player {
         return minMove;
     }
 
-    public void getValidMoves(Game game, ArrayList<Game> moves, char symbol) {
+    private void getValidMoves(Game game, ArrayList<Game> moves, char symbol) {
         char[][] gameBoard = game.getGameBoard();
         for(int i=0; i<game.getColumn(); i++){
             if(game.getGameBoard()[0][i] != '.'){

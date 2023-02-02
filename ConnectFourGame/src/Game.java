@@ -9,7 +9,7 @@ public class Game {
         initializeGameEnvironment();
     }
 
-    public void initializeGameEnvironment(){
+    private void initializeGameEnvironment(){
         this.gameBoard = new char[this.row][this.column];
         for (int i=0; i<row; i++){
             for(int j=0; j<column; j++){
