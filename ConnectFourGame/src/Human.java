@@ -1,5 +1,3 @@
-import java.util.Scanner;
-
 public class Human extends Player {
 
     public Human() { //Player's symbol is X
