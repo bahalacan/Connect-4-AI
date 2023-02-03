@@ -32,42 +32,32 @@ public class Game {
     
     }
 
-    public void startGame(Player p1, Player p2, char status){ // AI and Human should be inherited from Player class
-        printGameBoard();
-        int turn = 0; //0 for human, 1 for AI
-        if(status == 'n'){
-            turn = 1;
-        }        
-        int movement = 0;
-        while(!isGameOver(turn == 1 ? p1.getSymbol() : p2.getSymbol())){
-            if(turn == 0) {
-                System.out.println("Player's turn...");
-                movement = p1.play(this);
-                updateGameBoard(movement, p1.getSymbol());
-                printGameBoard();
-                turn = 1;
-            } else {
-                System.out.println("AI's turn...");
-                movement = p2.play(this);
-                updateGameBoard(movement, p2.getSymbol());
-                printGameBoard();
-                turn = 0;   
+    public boolean startHuman(Player p1, Player p2, int move, MyFrame frame){ // AI and Human should be inherited from Player class
+        int movement = p1.play(this, move);
+        if(movement != -1){
+            int selectedRow = updateGameBoard(movement, p1.getSymbol());
+            frame.setGame(selectedRow, movement, p1);
+            if(isGameOver('X')){
+                return true;
+            }
+            movement = p2.play(this, -1);
+            selectedRow = updateGameBoard(movement, 'O');
+            frame.setGame(selectedRow, movement, p2);
+            if(isGameOver('O')){
+                return true;
             }
         }
-        if(turn == 1) {
-            System.out.println("Player won.");
-        } else {
-            System.out.println("AI won");
-        }
+        return false;
     }
 
-    private void updateGameBoard(int movement, char symbol) {
+    private int updateGameBoard(int movement, char symbol) {
         for(int i=row-1; i>=0; i--){
             if(gameBoard[i][movement] == '.'){
                 gameBoard[i][movement] = symbol;
-                break;
+                return i;
             }
-        }      
+        }
+        return -1;      
     }
 
     public boolean isGameOver(char symbol) { 

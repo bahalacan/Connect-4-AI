@@ -9,7 +9,7 @@ public class AI extends Player {
     }
 
     @Override
-    public int play(Game game) {
+    public int play(Game game, int move) {
         int depth = 0;
         max(game, depth);
         return getBestMove();

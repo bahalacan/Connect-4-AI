@@ -7,23 +7,13 @@ public class Human extends Player {
     }
 
     @Override
-    public int play(Game game) {
-        char[][] gameBoard = game.getGameBoard();
-        while(true){
-            try {
-                Scanner input = new Scanner(System.in);
-                System.out.print("Enter move: ");
-                int movement = input.nextInt();
-                --movement; //when user enters 1 it means 0 for array representation
-                if(!checkIsMoveLegal(movement, gameBoard)){
-                    throw new Exception();
-                }
-                return movement;
-            } catch (Exception e) {
-                System.out.println("Enter correct input");
-            }
+    public int play(Game game, int move) {
+        char[][] gameBoard = game.getGameBoard();           
+        if(checkIsMoveLegal(move, gameBoard)){
+            return move;
         }
-        
+        return -1;
+           
     }
 
     private boolean checkIsMoveLegal(int movement, char gameBoard[][]) {
